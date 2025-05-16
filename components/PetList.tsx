@@ -10,27 +10,68 @@ import pets from "@/data/pets";
 import PetItem from "./PetItem";
 
 const PetList = () => {
-  const petList = pets.map((pet) => <PetItem key={pet.id} pet={pet} />);
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("All");
+  const petList = pets
+    .filter((pet) => pet.name && pet.name.includes(query))
+    .filter((pet) => type === "All" || pet.type.includes(type))
+    .map((pet) => <PetItem key={pet.id} pet={pet} />);
+
+  //useState for pet type
+
+  //handlepress for filters
+
+  const handlePressFilters = (inputValue: string): void => {
+    console.log("Filter OnPress Check: " + inputValue);
+    setType(inputValue);
+  };
+  //filter logic based on pets array
   return (
     <ScrollView
       contentContainerStyle={styles.container}
       style={styles.containerStyle}
     >
       {/* Search Input */}
-      <TextInput placeholder="Search for a pet" style={styles.searchInput} />
+      <TextInput
+        placeholder="Search for a pet"
+        style={styles.searchInput}
+        onChangeText={(value) => {
+          setQuery(value);
+        }}
+      />
 
       {/* Filter by type */}
       <ScrollView horizontal contentContainerStyle={styles.filterContainer}>
-        <TouchableOpacity style={styles.filterButton}>
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            handlePressFilters("All");
+          }}
+        >
           <Text>All</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButton}>
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            handlePressFilters("Cat");
+          }}
+        >
           <Text>Cat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButton}>
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            handlePressFilters("Dog");
+          }}
+        >
           <Text>Dog</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButton}>
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            handlePressFilters("Rabbit");
+          }}
+        >
           <Text>Rabbit</Text>
         </TouchableOpacity>
       </ScrollView>
