@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useState } from "react";
+import PetList from "./PetList";
 
 interface PetItemProps {
   pet: {
@@ -11,9 +12,9 @@ interface PetItemProps {
     image: string;
     image2: string;
   };
+  onAdopt: (id: number) => void; //adding new variable of function tpe to bypass immutability
 }
-
-const PetItem = ({ pet }: PetItemProps) => {
+const PetItem = ({ pet, onAdopt }: PetItemProps) => {
   const [currentImage, SetImage] = useState(pet.image);
   return (
     <View style={styles.container}>
@@ -32,8 +33,13 @@ const PetItem = ({ pet }: PetItemProps) => {
         >
           <Text style={styles.buttonText}>Pet</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.adoptButton}>
+        <TouchableOpacity
+          style={styles.adoptButton}
+          onPress={() => {
+            onAdopt(pet.id);
+            console.log("Adopt Button Pressed!: " + pet.id);
+          }}
+        >
           <Text style={styles.buttonText}>Adopt</Text>
         </TouchableOpacity>
       </View>

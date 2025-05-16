@@ -10,12 +10,18 @@ import pets from "@/data/pets";
 import PetItem from "./PetItem";
 
 const PetList = () => {
+  //adopted list useState that keeps being updated as an array
+  const [Adopted, setAdopted] = useState<number[]>([]);
+  const adoptHandler = (inputValue: number): void => {
+    setAdopted((prevList) => [...prevList, inputValue]);
+  };
   const [query, setQuery] = useState("");
   const [type, setType] = useState("All");
   const petList = pets
+    .filter((pet) => !Adopted.includes(pet.id)) // only show pets not adopted
     .filter((pet) => pet.name && pet.name.includes(query))
     .filter((pet) => type === "All" || pet.type.includes(type))
-    .map((pet) => <PetItem key={pet.id} pet={pet} />);
+    .map((pet) => <PetItem key={pet.id} pet={pet} onAdopt={adoptHandler} />);
 
   //useState for pet type
 
